@@ -2,12 +2,13 @@ import { Container } from 'react-bootstrap';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import { Link } from 'react-router-dom';
 
 const NavBar = () => {
   return (
     <Navbar expand="lg" className="bg-white border-bottom box-shadow">
       <Container>
-        <Navbar.Brand href="#">
+        <Navbar.Brand as={Link} to="/">
           <img src="/icon.svg" alt="logo" width="30px" className="me-2" />
           E-STORE
         </Navbar.Brand>
@@ -18,10 +19,10 @@ const NavBar = () => {
             style={{ maxHeight: '100px' }}
             navbarScroll
           >
-            <Nav.Link href="#action1" className="text-dark">
+            <Nav.Link as={Link} to="/" className="text-dark">
               Home
             </Nav.Link>
-            <Nav.Link className="text-dark" href="#action2">
+            <Nav.Link as={Link} className="text-dark" to="/contact">
               Contact
             </Nav.Link>
           </Nav>
@@ -30,10 +31,16 @@ const NavBar = () => {
             id="navbarScrollingDropdown"
             className="text-dark"
           >
-            <NavDropdown.Item href="#action3">Products</NavDropdown.Item>
-            <NavDropdown.Item href="#action4">Profile</NavDropdown.Item>
+            <NavDropdown.Item as={Link} to="/products">
+              Products
+            </NavDropdown.Item>
+            <NavDropdown.Item as={Link} to="/profile">
+              Profile
+            </NavDropdown.Item>
             <NavDropdown.Divider />
-            <NavDropdown.Item href="#action5">Logout</NavDropdown.Item>
+            <NavDropdown.Item as={Link} to="/logout">
+              Logout
+            </NavDropdown.Item>
           </NavDropdown>
         </Navbar.Collapse>
       </Container>
