@@ -31,7 +31,7 @@ const NavBar = () => {
             id="navbarScrollingDropdown"
             className="text-dark"
           >
-            <NavDropdown.Item as={Link} to="/products">
+            <NavDropdown.Item as={Link} to="/admin/products">
               Products
             </NavDropdown.Item>
             <NavDropdown.Item as={Link} to="/profile">
