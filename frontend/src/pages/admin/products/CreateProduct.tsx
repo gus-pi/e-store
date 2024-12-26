@@ -1,7 +1,20 @@
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+
+type ErrorType = {
+  name: string;
+  brand: string;
+  category: string;
+  price: string;
+  description: string;
+  image: string;
+};
 
 const CreateProduct = () => {
   const navigate = useNavigate();
+
+  const [validationErrors, setValidationErrors] = useState<ErrorType>();
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -31,7 +44,7 @@ const CreateProduct = () => {
       if (response.ok) {
         navigate('/admin/products');
       } else if (response.status === 400) {
-        alert('Validation errors');
+        setValidationErrors(data);
       } else {
         alert('Unable to fetch products');
       }
@@ -50,7 +63,7 @@ const CreateProduct = () => {
               <label className="col-sm-4 col-form-label">Name</label>
               <div className="col-sm-8">
                 <input className="form-control" name="name" />
-                <span className="text-danger"></span>
+                <span className="text-danger">{validationErrors?.name}</span>
               </div>
             </div>
 
@@ -58,7 +71,7 @@ const CreateProduct = () => {
               <label className="col-sm-4 col-form-label">Brand</label>
               <div className="col-sm-8">
                 <input className="form-control" name="brand" />
-                <span className="text-danger"></span>
+                <span className="text-danger">{validationErrors?.brand}</span>
               </div>
             </div>
 
@@ -73,7 +86,9 @@ const CreateProduct = () => {
                   <option value="Printers">Printers</option>
                   <option value="Cameras">Cameras</option>
                 </select>
-                <span className="text-danger"></span>
+                <span className="text-danger">
+                  {validationErrors?.category}
+                </span>
               </div>
             </div>
 
@@ -87,7 +102,7 @@ const CreateProduct = () => {
                   step="0.01"
                   min="1"
                 />
-                <span className="text-danger"></span>
+                <span className="text-danger">{validationErrors?.price}</span>
               </div>
             </div>
 
@@ -99,7 +114,9 @@ const CreateProduct = () => {
                   name="description"
                   rows={4}
                 />
-                <span className="text-danger"></span>
+                <span className="text-danger">
+                  {validationErrors?.description}
+                </span>
               </div>
             </div>
 
@@ -107,7 +124,7 @@ const CreateProduct = () => {
               <label className="col-sm-4 col-form-label">Image</label>
               <div className="col-sm-8">
                 <input className="form-control" type="file" name="image" />
-                <span className="text-danger"></span>
+                <span className="text-danger">{validationErrors?.image}</span>
               </div>
             </div>
 
