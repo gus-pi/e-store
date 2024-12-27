@@ -1,20 +1,40 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
-type ErrorType = {
+type dataType = {
   name: string;
   brand: string;
   category: string;
   price: string;
   description: string;
   image: string;
+  imageFilename: string;
+  createdAt: string;
 };
 
 const EditProduct = () => {
   const params = useParams();
   const navigate = useNavigate();
 
-  const [validationErrors, setValidationErrors] = useState<ErrorType>();
+  const [initialData, setInitialData] = useState<dataType>();
+
+  const [validationErrors, setValidationErrors] = useState<dataType>();
+
+  const getProducts = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:4000/products/${params.id}`
+      );
+      const data = await response.json();
+      setInitialData(data);
+    } catch (error) {
+      alert('Unable to fetch product data');
+    }
+  };
+
+  useEffect(() => {
+    getProducts();
+  }, []);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -33,10 +53,13 @@ const EditProduct = () => {
       return;
     }
     try {
-      const response = await fetch('http://localhost:4000/products', {
-        method: 'PATCH',
-        body: formData,
-      });
+      const response = await fetch(
+        `http://localhost:4000/products/${params.id}`,
+        {
+          method: 'PATCH',
+          body: formData,
+        }
+      );
 
       const data = await response.json();
 
@@ -45,7 +68,7 @@ const EditProduct = () => {
       } else if (response.status === 400) {
         setValidationErrors(data);
       } else {
-        alert('Unable to fetch products');
+        alert('Unable to update product');
       }
     } catch (error) {
       alert('Unable to connect to the server');
@@ -67,113 +90,129 @@ const EditProduct = () => {
               />
             </div>
           </div>
-          <form onSubmit={handleSubmit}>
-            <div className="row mb-3">
-              <label className="col-sm-4 col-form-label">Name</label>
-              <div className="col-sm-8">
-                <input className="form-control" name="name" />
-                <span className="text-danger">{validationErrors?.name}</span>
+          {initialData && (
+            <form onSubmit={handleSubmit}>
+              <div className="row mb-3">
+                <label className="col-sm-4 col-form-label">Name</label>
+                <div className="col-sm-8">
+                  <input
+                    className="form-control"
+                    name="name"
+                    defaultValue={initialData.name}
+                  />
+                  <span className="text-danger">{validationErrors?.name}</span>
+                </div>
               </div>
-            </div>
 
-            <div className="row mb-3">
-              <label className="col-sm-4 col-form-label">Brand</label>
-              <div className="col-sm-8">
-                <input className="form-control" name="brand" />
-                <span className="text-danger">{validationErrors?.brand}</span>
+              <div className="row mb-3">
+                <label className="col-sm-4 col-form-label">Brand</label>
+                <div className="col-sm-8">
+                  <input
+                    className="form-control"
+                    name="brand"
+                    defaultValue={initialData.brand}
+                  />
+                  <span className="text-danger">{validationErrors?.brand}</span>
+                </div>
               </div>
-            </div>
 
-            <div className="row mb-3">
-              <label className="col-sm-4 col-form-label">Category</label>
-              <div className="col-sm-8">
-                <select className="form-select" name="category">
-                  <option value="Other">Other</option>
-                  <option value="Phones">Phones</option>
-                  <option value="Computers">Computers</option>
-                  <option value="Accessories">Accessories</option>
-                  <option value="Printers">Printers</option>
-                  <option value="Cameras">Cameras</option>
-                </select>
-                <span className="text-danger">
-                  {validationErrors?.category}
-                </span>
+              <div className="row mb-3">
+                <label className="col-sm-4 col-form-label">Category</label>
+                <div className="col-sm-8">
+                  <select
+                    className="form-select"
+                    name="category"
+                    defaultValue={initialData.category}
+                  >
+                    <option value="Other">Other</option>
+                    <option value="Phones">Phones</option>
+                    <option value="Computers">Computers</option>
+                    <option value="Accessories">Accessories</option>
+                    <option value="Printers">Printers</option>
+                    <option value="Cameras">Cameras</option>
+                  </select>
+                  <span className="text-danger">
+                    {validationErrors?.category}
+                  </span>
+                </div>
               </div>
-            </div>
 
-            <div className="row mb-3">
-              <label className="col-sm-4 col-form-label">Price</label>
-              <div className="col-sm-8">
-                <input
-                  className="form-control"
-                  name="price"
-                  type="number"
-                  step="0.01"
-                  min="1"
-                />
-                <span className="text-danger">{validationErrors?.price}</span>
+              <div className="row mb-3">
+                <label className="col-sm-4 col-form-label">Price $</label>
+                <div className="col-sm-8">
+                  <input
+                    className="form-control"
+                    name="price"
+                    type="number"
+                    step="0.01"
+                    min="1"
+                    defaultValue={initialData.price}
+                  />
+                  <span className="text-danger">{validationErrors?.price}</span>
+                </div>
               </div>
-            </div>
 
-            <div className="row mb-3">
-              <label className="col-sm-4 col-form-label">Description</label>
-              <div className="col-sm-8">
-                <textarea
-                  className="form-control"
-                  name="description"
-                  rows={4}
-                />
-                <span className="text-danger">
-                  {validationErrors?.description}
-                </span>
+              <div className="row mb-3">
+                <label className="col-sm-4 col-form-label">Description</label>
+                <div className="col-sm-8">
+                  <textarea
+                    className="form-control"
+                    name="description"
+                    rows={4}
+                    defaultValue={initialData.description}
+                  />
+                  <span className="text-danger">
+                    {validationErrors?.description}
+                  </span>
+                </div>
               </div>
-            </div>
-            <div className="row mb-3">
-              <div className="col-sm-8 offset-sm-4">
-                <img
-                  src={`http://localhost:4000/images/${'10590390.jpg'}`}
-                  alt="image"
-                  width={150}
-                />
+              <div className="row mb-3">
+                <div className="col-sm-8 offset-sm-4">
+                  <img
+                    src={`http://localhost:4000/images/${initialData.imageFilename}`}
+                    alt="image"
+                    width={150}
+                  />
+                </div>
               </div>
-            </div>
 
-            <div className="row mb-3">
-              <label className="col-sm-4 col-form-label">Image</label>
-              <div className="col-sm-8">
-                <input className="form-control" type="file" name="image" />
-                <span className="text-danger">{validationErrors?.image}</span>
+              <div className="row mb-3">
+                <label className="col-sm-4 col-form-label">Image</label>
+                <div className="col-sm-8">
+                  <input className="form-control" type="file" name="image" />
+                  <span className="text-danger">{validationErrors?.image}</span>
+                </div>
               </div>
-            </div>
 
-            <div className="row mb-3">
-              <label className="col-sm-4 col-form-label">Created at</label>
-              <div className="col-sm-8">
-                <input
-                  className="form-control-plaintext"
-                  readOnly
-                  defaultValue={'2024-26-12'}
-                />
+              <div className="row mb-3">
+                <label className="col-sm-4 col-form-label">Created at</label>
+                <div className="col-sm-8">
+                  <input
+                    className="form-control-plaintext"
+                    readOnly
+                    defaultValue={initialData.createdAt.slice(0, 10)}
+                  />
+                </div>
               </div>
-            </div>
 
-            <div className="row">
-              <div className="offset-sm-4 col-sm-4 d-grid">
-                <button type="submit" className="btn btn-primary">
-                  Submit
-                </button>
+              <div className="row">
+                <div className="offset-sm-4 col-sm-4 d-grid">
+                  <button type="submit" className="btn btn-primary">
+                    Submit
+                  </button>
+                </div>
+                <div className="col-sm-4 d-grid">
+                  <Link
+                    className="btn btn-secondary"
+                    to="/admin/products"
+                    role="button"
+                  >
+                    Cancel
+                  </Link>
+                </div>
               </div>
-              <div className="col-sm-4 d-grid">
-                <Link
-                  className="btn btn-secondary"
-                  to="/admin/products"
-                  role="button"
-                >
-                  Cancel
-                </Link>
-              </div>
-            </div>
-          </form>
+            </form>
+          )}
         </div>
       </div>
     </div>
