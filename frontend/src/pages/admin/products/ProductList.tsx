@@ -54,13 +54,6 @@ const ProductList = () => {
   //pagination buttons
   let paginationButtons = [];
 
-  const handlePaginationClick = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    e.preventDefault();
-    setCurrentPage(Number(e));
-  };
-
   for (let i = 1; i <= totalPages; i++) {
     paginationButtons.push(
       <li
