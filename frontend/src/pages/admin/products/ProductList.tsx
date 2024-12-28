@@ -14,14 +14,19 @@ export type Product = {
 
 const ProductList = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const pageSize = 5;
 
   async function getProducts() {
+    let url = `http://localhost:4000/products?_sort=id&_order=desc&_page=${currentPage}&_limit=${pageSize}`;
     try {
-      const response = await fetch(
-        'http://localhost:4000/products?_sort=id&_order=desc'
-      );
+      const response = await fetch(url);
       if (response.ok) {
         const data = await response.json();
+        let totalCount = Number(response.headers.get('X-Total-Count'));
+        let pages = Math.ceil(totalCount / pageSize);
+        setTotalPages(pages);
         setProducts(data);
       }
     } catch (error) {
@@ -31,7 +36,7 @@ const ProductList = () => {
 
   useEffect(() => {
     getProducts();
-  }, []);
+  }, [currentPage]);
 
   const deleteProduct = async (id: number) => {
     try {
@@ -45,6 +50,36 @@ const ProductList = () => {
       alert('Unable to delete the product');
     }
   };
+
+  //pagination buttons
+  let paginationButtons = [];
+
+  const handlePaginationClick = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    setCurrentPage(Number(e));
+  };
+
+  for (let i = 1; i <= totalPages; i++) {
+    paginationButtons.push(
+      <li
+        className={i === currentPage ? 'page-item active' : '"page-item'}
+        key={i}
+      >
+        <a
+          className="page-link"
+          href={`?page=${i}`}
+          onClick={(e) => {
+            e.preventDefault();
+            setCurrentPage(Number(i));
+          }}
+        >
+          {i}
+        </a>
+      </li>
+    );
+  }
 
   return (
     <div className="container my-4">
@@ -112,6 +147,7 @@ const ProductList = () => {
           ))}
         </tbody>
       </table>
+      <ul className="pagination">{paginationButtons}</ul>
     </div>
   );
 };
