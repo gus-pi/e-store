@@ -16,10 +16,11 @@ const ProductList = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [search, setSearch] = useState('');
   const pageSize = 5;
 
   async function getProducts() {
-    let url = `http://localhost:4000/products?_sort=id&_order=desc&_page=${currentPage}&_limit=${pageSize}`;
+    let url = `http://localhost:4000/products?_sort=id&_order=desc&_page=${currentPage}&_limit=${pageSize}&q=${search}`;
     try {
       const response = await fetch(url);
       if (response.ok) {
@@ -36,7 +37,7 @@ const ProductList = () => {
 
   useEffect(() => {
     getProducts();
-  }, [currentPage]);
+  }, [currentPage, search]);
 
   const deleteProduct = async (id: number) => {
     try {
@@ -74,6 +75,15 @@ const ProductList = () => {
     );
   }
 
+  const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    //@ts-ignore
+    let text = event.target.search.value;
+    setSearch(text);
+    setCurrentPage(1);
+  };
+
   return (
     <div className="container my-4">
       <h2 className="text-center mb-4">Products</h2>
@@ -90,7 +100,19 @@ const ProductList = () => {
             Refresh
           </button>
         </div>
-        <div className="col"></div>
+        <div className="col">
+          <form className="d-flex" onSubmit={handleSearch}>
+            <input
+              name="search"
+              type="text"
+              className="form-control me-2"
+              placeholder="Search"
+            />
+            <button className="btn btn-outline-success" type="submit">
+              Search
+            </button>
+          </form>
+        </div>
       </div>
       <table className="table">
         <thead>
