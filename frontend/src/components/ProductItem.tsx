@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { ProductData } from '../types';
 
 const ProductItem = ({ product }: { product: ProductData }) => {
@@ -16,6 +17,14 @@ const ProductItem = ({ product }: { product: ProductData }) => {
         Category: {product.category} <br />
         {product.description.substr(0, 50) + '...'}
       </p>
+      <h4 className="nb-2">${product.price}</h4>
+      <Link
+        to={`/products/${product.id}`}
+        className="btn btn-primary btn-sm"
+        role="button"
+      >
+        Details
+      </Link>
     </div>
   );
 };
