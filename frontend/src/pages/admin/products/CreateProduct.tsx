@@ -1,14 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-
-type ErrorType = {
-  name: string;
-  brand: string;
-  category: string;
-  price: string;
-  description: string;
-  image: string;
-};
+import { ErrorType } from '../../../types';
 
 const CreateProduct = () => {
   const navigate = useNavigate();

@@ -1,24 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-
-type dataType = {
-  name: string;
-  brand: string;
-  category: string;
-  price: string;
-  description: string;
-  image: string;
-  imageFilename: string;
-  createdAt: string;
-};
+import { ErrorType, ProductData } from '../../../types';
 
 const EditProduct = () => {
   const params = useParams();
   const navigate = useNavigate();
 
-  const [initialData, setInitialData] = useState<dataType>();
+  const [initialData, setInitialData] = useState<ProductData>();
 
-  const [validationErrors, setValidationErrors] = useState<dataType>();
+  const [validationErrors, setValidationErrors] = useState<ErrorType>();
 
   const getProducts = async () => {
     try {

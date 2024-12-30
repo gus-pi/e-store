@@ -1,3 +1,5 @@
+import ProductItem from '../components/ProductItem';
+
 const Home = () => {
   return (
     <>
@@ -55,6 +57,23 @@ const Home = () => {
                 <option value="1">Price: Low to High</option>
                 <option value="2">Price: High to Low</option>
               </select>
+            </div>
+          </div>
+          <div className="row mb-5 g-3">
+            <div className="col-md-3 col-sm-6">
+              <ProductItem
+                product={{
+                  id: 1,
+                  name: 'MSI Pulse Pro',
+                  brand: 'MSI',
+                  category: 'Computers',
+                  price: 1099,
+                  description:
+                    'MSI Pulse GL66 15.6" FHD 144Hz Gaming Laptop: Intel Core i7-12700H RTX 3070 16GB 512GB NVMe SSD',
+                  imageFilename: '22866337.jpg',
+                  createdAt: '2023-07-13T17:46:54.8900000',
+                }}
+              />
             </div>
           </div>
         </div>
