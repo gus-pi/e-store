@@ -6,11 +6,19 @@ const Home = () => {
   const [products, setProducts] = useState<ProductData[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [filterParams, setFilterParams] = useState({ brand: '', category: '' });
 
   const pageSize = 8;
 
   async function getProducts() {
     let url = `http://localhost:4000/products?&_sort=id&_order=desc&_page=${currentPage}&_limit=${pageSize}`;
+
+    if (filterParams.brand) {
+      url = url + `&brand=${filterParams.brand}`;
+    }
+    if (filterParams.category) {
+      url = url + `&category=${filterParams.category}`;
+    }
 
     try {
       const response = await fetch(url);
@@ -28,7 +36,7 @@ const Home = () => {
 
   useEffect(() => {
     getProducts();
-  }, [currentPage]);
+  }, [currentPage, filterParams]);
 
   //pagination buttons
   let paginationButtons = [];
@@ -52,6 +60,18 @@ const Home = () => {
       </li>
     );
   }
+
+  const handleBrandFilter = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    let brand = event.target.value;
+    setFilterParams({ ...filterParams, brand: brand });
+  };
+
+  const handleCategoryFilter = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    let category = event.target.value;
+    setFilterParams({ ...filterParams, category: category });
+  };
 
   return (
     <>
@@ -84,7 +104,7 @@ const Home = () => {
               <h4>Products</h4>
             </div>
             <div className="col-md-2">
-              <select className="form-select">
+              <select className="form-select" onChange={handleBrandFilter}>
                 <option value="">All Brands</option>
                 <option value="Samsung">Samsung</option>
                 <option value="Apple">Apple</option>
@@ -93,7 +113,7 @@ const Home = () => {
               </select>
             </div>
             <div className="col-md-2">
-              <select className="form-select">
+              <select className="form-select" onChange={handleCategoryFilter}>
                 <option value="">All Categories</option>
                 <option value="Phones">Phones</option>
                 <option value="Computers">Computers</option>
