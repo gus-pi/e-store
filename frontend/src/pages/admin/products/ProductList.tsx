@@ -17,10 +17,16 @@ const ProductList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [search, setSearch] = useState('');
+  const [sortColumn, setSortColumn] = useState({
+    column: 'id',
+    orderBy: 'desc',
+  });
+
   const pageSize = 5;
 
   async function getProducts() {
-    let url = `http://localhost:4000/products?_sort=id&_order=desc&_page=${currentPage}&_limit=${pageSize}&q=${search}`;
+    let url = `http://localhost:4000/products?&_page=${currentPage}&_limit=${pageSize}&q=${search}&_sort=${sortColumn.column}&_order=${sortColumn.orderBy}`;
+
     try {
       const response = await fetch(url);
       if (response.ok) {
@@ -37,7 +43,7 @@ const ProductList = () => {
 
   useEffect(() => {
     getProducts();
-  }, [currentPage, search]);
+  }, [currentPage, search, sortColumn]);
 
   const deleteProduct = async (id: number) => {
     try {
@@ -84,9 +90,22 @@ const ProductList = () => {
     setCurrentPage(1);
   };
 
+  const sortTable = (column: string) => {
+    let orderBy = 'desc';
+    if (column === sortColumn.column) {
+      if (sortColumn.orderBy === 'asc') {
+        orderBy = 'desc';
+      } else {
+        orderBy = 'asc';
+      }
+    }
+    setSortColumn({ column, orderBy });
+  };
+
   return (
     <div className="container my-4">
       <h2 className="text-center mb-4">Products</h2>
+
       <div className="row mb-3">
         <div className="col">
           <Link className="btn btn-primary me-1" to="/admin/products/create">
@@ -117,13 +136,37 @@ const ProductList = () => {
       <table className="table">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Brand</th>
-            <th>Category</th>
-            <th>Price</th>
+            <th style={{ cursor: 'pointer' }} onClick={() => sortTable('id')}>
+              ID
+            </th>
+            <th style={{ cursor: 'pointer' }} onClick={() => sortTable('name')}>
+              Name
+            </th>
+            <th
+              style={{ cursor: 'pointer' }}
+              onClick={() => sortTable('brand')}
+            >
+              Brand
+            </th>
+            <th
+              style={{ cursor: 'pointer' }}
+              onClick={() => sortTable('category')}
+            >
+              Category
+            </th>
+            <th
+              style={{ cursor: 'pointer' }}
+              onClick={() => sortTable('price')}
+            >
+              Price
+            </th>
             <th>Image</th>
-            <th>Created At</th>
+            <th
+              style={{ cursor: 'pointer' }}
+              onClick={() => sortTable('createdAt')}
+            >
+              Created At
+            </th>
             <th>Action</th>
           </tr>
         </thead>
