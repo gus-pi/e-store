@@ -137,35 +137,78 @@ const ProductList = () => {
         <thead>
           <tr>
             <th style={{ cursor: 'pointer' }} onClick={() => sortTable('id')}>
-              ID
+              <span className="d-flex align-items-center">
+                ID
+                <SortArrow
+                  column="id"
+                  sortColumn={sortColumn.column}
+                  orderBy={sortColumn.orderBy}
+                />
+              </span>
             </th>
             <th style={{ cursor: 'pointer' }} onClick={() => sortTable('name')}>
-              Name
+              <span className="d-flex align-items-center">
+                Name
+                <SortArrow
+                  column="name"
+                  sortColumn={sortColumn.column}
+                  orderBy={sortColumn.orderBy}
+                />
+              </span>
             </th>
             <th
               style={{ cursor: 'pointer' }}
               onClick={() => sortTable('brand')}
             >
-              Brand
+              {' '}
+              <span className="d-flex align-items-center">
+                Brand
+                <SortArrow
+                  column="brand"
+                  sortColumn={sortColumn.column}
+                  orderBy={sortColumn.orderBy}
+                />
+              </span>
             </th>
             <th
               style={{ cursor: 'pointer' }}
               onClick={() => sortTable('category')}
             >
-              Category
+              <span className="d-flex align-items-center">
+                Category
+                <SortArrow
+                  column="category"
+                  sortColumn={sortColumn.column}
+                  orderBy={sortColumn.orderBy}
+                />
+              </span>
             </th>
             <th
               style={{ cursor: 'pointer' }}
               onClick={() => sortTable('price')}
             >
-              Price
+              <span className="d-flex align-items-center">
+                Price
+                <SortArrow
+                  column="price"
+                  sortColumn={sortColumn.column}
+                  orderBy={sortColumn.orderBy}
+                />
+              </span>
             </th>
             <th>Image</th>
             <th
               style={{ cursor: 'pointer' }}
               onClick={() => sortTable('createdAt')}
             >
-              Created At
+              <span className="d-flex align-items-center">
+                Created At
+                <SortArrow
+                  column="createdAt"
+                  sortColumn={sortColumn.column}
+                  orderBy={sortColumn.orderBy}
+                />
+              </span>
             </th>
             <th>Action</th>
           </tr>
@@ -208,6 +251,26 @@ const ProductList = () => {
       <ul className="pagination">{paginationButtons}</ul>
     </div>
   );
+};
+
+const SortArrow = ({
+  column,
+  sortColumn,
+  orderBy,
+}: {
+  column: string;
+  sortColumn: string;
+  orderBy: string;
+}) => {
+  if (column !== sortColumn) {
+    return null;
+  }
+
+  if (orderBy === 'asc') {
+    return <i className="bi bi-arrow-up-short"></i>;
+  }
+
+  return <i className="bi bi-arrow-down-short"></i>;
 };
 
 export default ProductList;
