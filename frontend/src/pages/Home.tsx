@@ -4,15 +4,22 @@ import { ProductData } from '../types';
 
 const Home = () => {
   const [products, setProducts] = useState<ProductData[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
+  const pageSize = 8;
 
   async function getProducts() {
-    let url = `http://localhost:4000/products?&_sort=id&_order=desc`;
+    let url = `http://localhost:4000/products?&_sort=id&_order=desc&_page=${currentPage}&_limit=${pageSize}`;
 
     try {
       const response = await fetch(url);
       if (response.ok) {
         const data = await response.json();
         setProducts(data);
+        let totalCount = Number(response.headers.get('X-Total-Count'));
+        let pages = Math.ceil(totalCount / pageSize);
+        setTotalPages(pages);
       }
     } catch (error) {
       alert('Unable to fetch data');
@@ -21,7 +28,30 @@ const Home = () => {
 
   useEffect(() => {
     getProducts();
-  }, []);
+  }, [currentPage]);
+
+  //pagination buttons
+  let paginationButtons = [];
+
+  for (let i = 1; i <= totalPages; i++) {
+    paginationButtons.push(
+      <li
+        className={i === currentPage ? 'page-item active' : '"page-item'}
+        key={i}
+      >
+        <a
+          className="page-link"
+          href={`?page=${i}`}
+          onClick={(e) => {
+            e.preventDefault();
+            setCurrentPage(Number(i));
+          }}
+        >
+          {i}
+        </a>
+      </li>
+    );
+  }
 
   return (
     <>
@@ -88,6 +118,7 @@ const Home = () => {
               </div>
             ))}
           </div>
+          <ul className="pagination">{paginationButtons}</ul>
         </div>
       </div>
     </>
