@@ -8,10 +8,15 @@ const Home = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [filterParams, setFilterParams] = useState({ brand: '', category: '' });
 
+  const [sortColumn, setSortColumn] = useState({
+    column: 'id',
+    orderBy: 'desc',
+  });
+
   const pageSize = 8;
 
   async function getProducts() {
-    let url = `http://localhost:4000/products?&_sort=id&_order=desc&_page=${currentPage}&_limit=${pageSize}`;
+    let url = `http://localhost:4000/products?&_page=${currentPage}&_limit=${pageSize}`;
 
     if (filterParams.brand) {
       url = url + `&brand=${filterParams.brand}`;
@@ -19,6 +24,8 @@ const Home = () => {
     if (filterParams.category) {
       url = url + `&category=${filterParams.category}`;
     }
+
+    url = url + `&_sort=${sortColumn.column}&_order=${sortColumn.orderBy}`;
 
     try {
       const response = await fetch(url);
@@ -36,7 +43,7 @@ const Home = () => {
 
   useEffect(() => {
     getProducts();
-  }, [currentPage, filterParams]);
+  }, [currentPage, filterParams, sortColumn]);
 
   //pagination buttons
   let paginationButtons = [];
@@ -64,6 +71,7 @@ const Home = () => {
   const handleBrandFilter = (event: React.ChangeEvent<HTMLSelectElement>) => {
     let brand = event.target.value;
     setFilterParams({ ...filterParams, brand: brand });
+    setCurrentPage(1);
   };
 
   const handleCategoryFilter = (
@@ -71,6 +79,24 @@ const Home = () => {
   ) => {
     let category = event.target.value;
     setFilterParams({ ...filterParams, category: category });
+    setCurrentPage(1);
+  };
+
+  const handleSort = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    let value = Number(event.target.value);
+    switch (value) {
+      case 0:
+        setSortColumn({ column: 'id', orderBy: 'desc' });
+        break;
+      case 1:
+        setSortColumn({ column: 'price', orderBy: 'asc' });
+        break;
+      case 2:
+        setSortColumn({ column: 'price', orderBy: 'desc' });
+        break;
+      default:
+        break;
+    }
   };
 
   return (
@@ -124,7 +150,7 @@ const Home = () => {
               </select>
             </div>
             <div className="col-md-2">
-              <select className="form-select">
+              <select className="form-select" onChange={handleSort}>
                 <option value="0">Order By Newest</option>
                 <option value="1">Price: Low to High</option>
                 <option value="2">Price: High to Low</option>
