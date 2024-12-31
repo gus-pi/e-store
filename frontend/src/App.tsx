@@ -9,6 +9,8 @@ import ProductList from './pages/admin/products/ProductList';
 import CreateProduct from './pages/admin/products/CreateProduct';
 import EditProduct from './pages/admin/products/EditProduct';
 import ProductDetails from './pages/ProductDetails';
+import Register from './pages/auth/Register';
+import Login from './pages/auth/Login';
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
           <Route path="/admin/products" element={<ProductList />} />
           <Route path="/admin/products/create" element={<CreateProduct />} />
           <Route path="/admin/products/edit/:id" element={<EditProduct />} />
+          <Route path="/auth/register" element={<Register />} />
+          <Route path="/auth/login" element={<Login />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />
