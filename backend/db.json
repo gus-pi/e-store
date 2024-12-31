@@ -117,6 +117,15 @@
       "phone": "+1222333555",
       "address": "California, USA",
       "id": 13
+    },
+    {
+      "email": "bob@gmail.com",
+      "password": "$2a$10$K/xCIJkGfIF3FjQ6wjd.Au8/mUzgHvmCSNU5MOSBxrWUoRQVQ2Apq",
+      "firstname": "Bob",
+      "lastname": "Bob",
+      "phone": "656456546",
+      "address": "2736 N Weil St",
+      "id": 14
     }
   ],
   "products": [
