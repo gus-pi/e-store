@@ -1,5 +1,7 @@
 import jsonServer from 'json-server';
 import multer from 'multer';
+import auth from 'json-server-auth';
+
 const server = jsonServer.create();
 const router = jsonServer.router('db.json');
 const middlewares = jsonServer.defaults();
@@ -69,6 +71,8 @@ server.post('/products', (req, res, next) => {
   // Continue to JSON Server router
   next();
 });
+
+server.use(auth);
 
 // Use default router
 server.use(router);
