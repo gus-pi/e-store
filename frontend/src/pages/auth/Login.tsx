@@ -1,13 +1,12 @@
 import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  const navigate = useNavigate();
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     let email = e.currentTarget.email.value;
-    let password = e.currentTarget.email.password;
-
-    const navigate = useNavigate();
+    let password = e.currentTarget.password.value;
 
     if (!email || !password) {
       alert('Please fill all fields');
@@ -17,7 +16,7 @@ const Login = () => {
     const credentials = { email, password };
 
     try {
-      const response = await fetch('http://localhost:4000/register', {
+      const response = await fetch('http://localhost:4000/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
