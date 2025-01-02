@@ -17,3 +17,8 @@ export type ErrorType = {
   description: string;
   image: string;
 };
+
+export type UserCredentials = {
+  email: string;
+  password: string;
+};

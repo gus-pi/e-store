@@ -1,7 +1,22 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { AppContext } from '../../AppContext';
 
 const Login = () => {
   const navigate = useNavigate();
+
+  const appContext = useContext(AppContext);
+
+  if (!appContext) {
+    throw new Error('AppContext.Provider is missing!');
+  }
+
+  const { userCredentials, setUserCredentials } = appContext;
+
+  if (userCredentials) {
+    return <Navigate to="/" />;
+  }
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -26,6 +41,7 @@ const Login = () => {
       const data = await response.json();
       if (response.ok) {
         console.log('server response: ', data);
+        setUserCredentials(data);
         navigate('/');
       } else {
         alert('Unable to log in' + data);

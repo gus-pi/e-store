@@ -11,26 +11,34 @@ import EditProduct from './pages/admin/products/EditProduct';
 import ProductDetails from './pages/ProductDetails';
 import Register from './pages/auth/Register';
 import Login from './pages/auth/Login';
+import { useState } from 'react';
+import { AppContext } from './AppContext';
+import { UserCredentials } from './types';
 
 function App() {
+  const [userCredentials, setUserCredentials] =
+    useState<UserCredentials | null>(null);
+
   return (
-    <>
-      <BrowserRouter>
-        <NavBar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/products/:id" element={<ProductDetails />} />
-          <Route path="/admin/products" element={<ProductList />} />
-          <Route path="/admin/products/create" element={<CreateProduct />} />
-          <Route path="/admin/products/edit/:id" element={<EditProduct />} />
-          <Route path="/auth/register" element={<Register />} />
-          <Route path="/auth/login" element={<Login />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        <Footer />
-      </BrowserRouter>
-    </>
+    <AppContext.Provider value={{ userCredentials, setUserCredentials }}>
+      <>
+        <BrowserRouter>
+          <NavBar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/products/:id" element={<ProductDetails />} />
+            <Route path="/admin/products" element={<ProductList />} />
+            <Route path="/admin/products/create" element={<CreateProduct />} />
+            <Route path="/admin/products/edit/:id" element={<EditProduct />} />
+            <Route path="/auth/register" element={<Register />} />
+            <Route path="/auth/login" element={<Login />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <Footer />
+        </BrowserRouter>
+      </>
+    </AppContext.Provider>
   );
 }
 
