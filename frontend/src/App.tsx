@@ -11,13 +11,27 @@ import EditProduct from './pages/admin/products/EditProduct';
 import ProductDetails from './pages/ProductDetails';
 import Register from './pages/auth/Register';
 import Login from './pages/auth/Login';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AppContext } from './AppContext';
 import { UserCredentials } from './types';
 
 function App() {
+  const getStoredCredentials = () => {
+    let data = localStorage.getItem('credentials');
+    if (data) {
+      let json = JSON.parse(data);
+      return json;
+    }
+    return null;
+  };
+
   const [userCredentials, setUserCredentials] =
     useState<UserCredentials | null>(null);
+
+  useEffect(() => {
+    let str = JSON.stringify(userCredentials);
+    localStorage.setItem('credentials', str);
+  }, [userCredentials]);
 
   return (
     <AppContext.Provider value={{ userCredentials, setUserCredentials }}>
