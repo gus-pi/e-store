@@ -1,6 +1,15 @@
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { AppContext } from '../AppContext';
 
 const NavBar = () => {
+  const appContext = useContext(AppContext);
+
+  if (!appContext) {
+    throw new Error('AppContext.Provider is missing!');
+  }
+
+  const { setUserCredentials } = appContext;
   return (
     <nav className="navbar navbar-expand-lg bg-white border-bottom box-shadow">
       <div className="container">
@@ -64,7 +73,11 @@ const NavBar = () => {
                     <hr className="dropdown-divider" />
                   </li>
                   <li>
-                    <Link className="dropdown-item" to="/">
+                    <Link
+                      className="dropdown-item"
+                      to="/"
+                      onClick={() => setUserCredentials(null)}
+                    >
                       Logout
                     </Link>
                   </li>
