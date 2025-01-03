@@ -26,7 +26,7 @@ function App() {
   };
 
   const [userCredentials, setUserCredentials] =
-    useState<UserCredentials | null>(null);
+    useState<UserCredentials | null>(getStoredCredentials());
 
   useEffect(() => {
     let str = JSON.stringify(userCredentials);
