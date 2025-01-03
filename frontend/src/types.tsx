@@ -21,4 +21,5 @@ export type ErrorType = {
 export type UserCredentials = {
   email: string;
   password: string;
+  role: string;
 };

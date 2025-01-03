@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../AppContext';
+import { Dropdown, DropdownButton } from 'react-bootstrap';
 
 const NavBar = () => {
   const appContext = useContext(AppContext);
@@ -9,7 +10,7 @@ const NavBar = () => {
     throw new Error('AppContext.Provider is missing!');
   }
 
-  const { setUserCredentials } = appContext;
+  const { userCredentials, setUserCredentials } = appContext;
   return (
     <nav className="navbar navbar-expand-lg bg-white border-bottom box-shadow">
       <div className="container">
@@ -41,83 +42,45 @@ const NavBar = () => {
               </Link>
             </li>
           </ul>
-          {
-            <ul className="navbar-nav">
-              <li className="nav-item dropdown">
-                <a
-                  className="nav-link dropdown-toggle text-dark"
-                  href="#"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Admin
-                </a>
-                <ul className="dropdown-menu">
-                  <li>
-                    <Link className="dropdown-item" to="/admin/products">
-                      Products
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="dropdown-item" to="/admin/users">
-                      Users
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="dropdown-item" to="/profile">
-                      Profile
-                    </Link>
-                  </li>
-                  <li>
-                    <hr className="dropdown-divider" />
-                  </li>
-                  <li>
-                    <Link
-                      className="dropdown-item"
-                      to="/"
-                      onClick={() => setUserCredentials(null)}
-                    >
-                      Logout
-                    </Link>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          }
+          {userCredentials && userCredentials.role === 'admin' && (
+            <DropdownButton id="dropdown-basic-button" title="Admin">
+              <Dropdown.Item as={Link} to="/admin/products">
+                Products
+              </Dropdown.Item>
+              <Dropdown.Item as={Link} to="/admin/users">
+                Users
+              </Dropdown.Item>
+              <Dropdown.Item as={Link} to="/profile">
+                Profile
+              </Dropdown.Item>
+              <hr />
+              <Dropdown.Item
+                as={Link}
+                to="/"
+                onClick={() => setUserCredentials(null)}
+              >
+                Logout
+              </Dropdown.Item>
+            </DropdownButton>
+          )}
 
-          {
-            <ul className="navbar-nav">
-              <li className="nav-item dropdown">
-                <a
-                  className="nav-link dropdown-toggle text-dark"
-                  href="#"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Client
-                </a>
-                <ul className="dropdown-menu">
-                  <li>
-                    <Link className="dropdown-item" to="/profile">
-                      Profile
-                    </Link>
-                  </li>
-                  <li>
-                    <hr className="dropdown-divider" />
-                  </li>
-                  <li>
-                    <Link className="dropdown-item" to="/">
-                      Logout
-                    </Link>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          }
+          {userCredentials && userCredentials.role !== 'admin' && (
+            <DropdownButton id="dropdown-basic-button" title="Client">
+              <Dropdown.Item as={Link} to="/profile">
+                Profile
+              </Dropdown.Item>
+              <hr />
+              <Dropdown.Item
+                as={Link}
+                to="/"
+                onClick={() => setUserCredentials(null)}
+              >
+                Logout
+              </Dropdown.Item>
+            </DropdownButton>
+          )}
 
-          {
+          {!userCredentials && (
             <ul className="navbar-nav">
               <li className="nav-item">
                 <Link
@@ -138,7 +101,7 @@ const NavBar = () => {
                 </Link>
               </li>
             </ul>
-          }
+          )}
         </div>
       </div>
     </nav>
