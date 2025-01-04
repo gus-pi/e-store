@@ -56,9 +56,9 @@ const EditProduct = () => {
         `http://localhost:4000/products/${params.id}`,
         {
           method: 'PATCH',
-          /*headers: {
-            Authorization: 'Bearer' + userCredentials?.accessToken,
-          },*/
+          headers: {
+            Authorization: 'Bearer ' + userCredentials?.accessToken,
+          },
           body: formData,
         }
       );
@@ -66,16 +66,18 @@ const EditProduct = () => {
       const data = await response.json();
 
       if (response.ok) {
+        //Product created correctly!
         navigate('/admin/products');
       } else if (response.status === 400) {
         setValidationErrors(data);
       } else if (response.status === 401) {
+        // disconnect the user
         setUserCredentials(null);
       } else {
-        alert('Unable to update product');
+        alert('Unable to update the product!');
       }
     } catch (error) {
-      alert('Unable to connect to the server');
+      alert('Unable to connect to the server!');
     }
   };
   return (

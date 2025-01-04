@@ -38,7 +38,7 @@ const CreateProduct = () => {
       const response = await fetch('http://localhost:4000/products', {
         method: 'POST',
         headers: {
-          Authorization: 'Bearer' + userCredentials?.accessToken,
+          Authorization: 'Bearer ' + userCredentials?.accessToken,
         },
         body: formData,
       });
