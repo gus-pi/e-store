@@ -1,10 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ErrorType, ProductData } from '../../../types';
+import { AppContext } from '../../../AppContext';
 
 const EditProduct = () => {
   const params = useParams();
   const navigate = useNavigate();
+
+  const appContext = useContext(AppContext);
+
+  if (!appContext) {
+    throw new Error('AppContext.Provider is missing!');
+  }
+
+  const { userCredentials, setUserCredentials } = appContext;
 
   const [initialData, setInitialData] = useState<ProductData>();
 
@@ -47,6 +56,9 @@ const EditProduct = () => {
         `http://localhost:4000/products/${params.id}`,
         {
           method: 'PATCH',
+          /*headers: {
+            Authorization: 'Bearer' + userCredentials?.accessToken,
+          },*/
           body: formData,
         }
       );
@@ -57,6 +69,8 @@ const EditProduct = () => {
         navigate('/admin/products');
       } else if (response.status === 400) {
         setValidationErrors(data);
+      } else if (response.status === 401) {
+        setUserCredentials(null);
       } else {
         alert('Unable to update product');
       }

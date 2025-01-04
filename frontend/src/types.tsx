@@ -30,5 +30,6 @@ export type User = {
 export type UserCredentials = {
   email: string;
   password: string;
+  accessToken: string;
   user: User;
 };

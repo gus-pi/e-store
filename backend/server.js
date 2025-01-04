@@ -72,6 +72,15 @@ server.post('/products', (req, res, next) => {
   next();
 });
 
+const rules = auth.rewriter({
+  // Permission rules
+  users: 660,
+  products: 664,
+});
+
+// You must apply the middlewares in the following order
+server.use(rules);
+
 server.use(auth);
 
 // Use default router

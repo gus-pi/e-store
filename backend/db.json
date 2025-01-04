@@ -126,7 +126,16 @@
       "phone": "656456546",
       "address": "2736 N Weil St",
       "id": 14,
-      "role":"admin"
+      "role": "admin"
+    },
+    {
+      "email": "dan@gmail.com",
+      "password": "$2a$10$4ey.ziuDGTYe0Gju59HgCeLNXBc.2N/iH6LgxB4fScK3kkrzmEpA6",
+      "firstname": "dan",
+      "lastname": "dandadan",
+      "phone": "12341234",
+      "address": "house",
+      "id": 15
     }
   ],
   "products": [

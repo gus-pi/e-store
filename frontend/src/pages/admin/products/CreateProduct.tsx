@@ -1,9 +1,18 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ErrorType } from '../../../types';
+import { AppContext } from '../../../AppContext';
 
 const CreateProduct = () => {
   const navigate = useNavigate();
+
+  const appContext = useContext(AppContext);
+
+  if (!appContext) {
+    throw new Error('AppContext.Provider is missing!');
+  }
+
+  const { userCredentials, setUserCredentials } = appContext;
 
   const [validationErrors, setValidationErrors] = useState<ErrorType>();
 
@@ -28,6 +37,9 @@ const CreateProduct = () => {
     try {
       const response = await fetch('http://localhost:4000/products', {
         method: 'POST',
+        headers: {
+          Authorization: 'Bearer' + userCredentials?.accessToken,
+        },
         body: formData,
       });
 
@@ -37,6 +49,8 @@ const CreateProduct = () => {
         navigate('/admin/products');
       } else if (response.status === 400) {
         setValidationErrors(data);
+      } else if (response.status === 401) {
+        setUserCredentials(null);
       } else {
         alert('Unable to fetch products');
       }
