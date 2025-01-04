@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useContext, useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import SortArrow from '../../../components/SortArrow';
+import { AppContext } from '../../../AppContext';
 
 export type Product = {
   id: number;
@@ -24,6 +25,15 @@ const ProductList = () => {
   });
 
   const pageSize = 5;
+  const navigate = useNavigate();
+
+  const appContext = useContext(AppContext);
+
+  if (!appContext) {
+    throw new Error('AppContext.Provider is missing!');
+  }
+
+  const { userCredentials, setUserCredentials } = appContext;
 
   async function getProducts() {
     let url = `http://localhost:4000/products?&_page=${currentPage}&_limit=${pageSize}&q=${search}&_sort=${sortColumn.column}&_order=${sortColumn.orderBy}`;
@@ -50,10 +60,22 @@ const ProductList = () => {
     try {
       const response = await fetch(`http://localhost:4000/products/${id}`, {
         method: 'DELETE',
+        headers: {
+          Authorization: 'Bearer ' + userCredentials?.accessToken,
+        },
       });
-      if (response) {
-        getProducts();
+      if (response.status === 401) {
+        // unauthorized response
+        setUserCredentials(null);
+        // redirect the user
+        navigate('/auth/login');
+        return;
       }
+
+      if (!response.ok) {
+        throw new Error();
+      }
+      getProducts();
     } catch (error) {
       alert('Unable to delete the product');
     }
