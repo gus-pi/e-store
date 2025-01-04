@@ -14,6 +14,7 @@ import Login from './pages/auth/Login';
 import { useEffect, useState } from 'react';
 import { AppContext } from './AppContext';
 import { UserCredentials } from './types';
+import { AdminRoute } from './components/Authorization';
 
 function App() {
   const getStoredCredentials = () => {
@@ -42,9 +43,32 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/products/:id" element={<ProductDetails />} />
-            <Route path="/admin/products" element={<ProductList />} />
-            <Route path="/admin/products/create" element={<CreateProduct />} />
-            <Route path="/admin/products/edit/:id" element={<EditProduct />} />
+
+            <Route
+              path="/admin/products"
+              element={
+                <AdminRoute>
+                  <ProductList />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/products/create"
+              element={
+                <AdminRoute>
+                  <CreateProduct />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/products/edit/:id"
+              element={
+                <AdminRoute>
+                  <EditProduct />
+                </AdminRoute>
+              }
+            />
+
             <Route path="/auth/register" element={<Register />} />
             <Route path="/auth/login" element={<Login />} />
             <Route path="*" element={<NotFound />} />

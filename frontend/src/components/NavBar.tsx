@@ -42,7 +42,7 @@ const NavBar = () => {
               </Link>
             </li>
           </ul>
-          {userCredentials && userCredentials.role === 'admin' && (
+          {userCredentials && userCredentials.user.role === 'admin' && (
             <DropdownButton id="dropdown-basic-button" title="Admin">
               <Dropdown.Item as={Link} to="/admin/products">
                 Products
@@ -64,7 +64,7 @@ const NavBar = () => {
             </DropdownButton>
           )}
 
-          {userCredentials && userCredentials.role !== 'admin' && (
+          {userCredentials && userCredentials.user.role !== 'admin' && (
             <DropdownButton id="dropdown-basic-button" title="Client">
               <Dropdown.Item as={Link} to="/profile">
                 Profile

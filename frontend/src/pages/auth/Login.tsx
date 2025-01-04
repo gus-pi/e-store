@@ -41,6 +41,7 @@ const Login = () => {
       const data = await response.json();
       if (response.ok) {
         console.log('server response: ', data);
+        setUserCredentials(data);
         navigate('/');
       } else {
         alert('Unable to log in' + data);

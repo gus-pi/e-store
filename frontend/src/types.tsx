@@ -18,8 +18,17 @@ export type ErrorType = {
   image: string;
 };
 
+export type User = {
+  firstname: string;
+  lastname: string;
+  phone: string;
+  address: string;
+  id: number;
+  role: 'admin' | 'client' | null;
+};
+
 export type UserCredentials = {
   email: string;
   password: string;
-  role: string;
+  user: User;
 };
