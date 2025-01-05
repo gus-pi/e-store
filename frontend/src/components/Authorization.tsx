@@ -17,7 +17,7 @@ export const AdminRoute = ({ children }: { children: React.ReactNode }) => {
   return children;
 };
 
-export const AthenticatedUserRoute = ({
+export const AuthenticatedUserRoute = ({
   children,
 }: {
   children: React.ReactNode;
