@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import UserDetails from '../components/UserDetails';
 
 const UserProfile = () => {
   const [action, setAction] = useState('default');
@@ -9,6 +10,7 @@ const UserProfile = () => {
           <div className="col-lg-8 mx-auto rounded border p-4">
             <h2 className="mb-3">User Profile</h2>
             <hr />
+            <UserDetails />
             <hr />
             <button
               className="btn btn-primary btn-sm me-2"

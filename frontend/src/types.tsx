@@ -23,6 +23,7 @@ export type User = {
   lastname: string;
   phone: string;
   address: string;
+  email: string;
   id: number;
   role: 'admin' | 'client' | null;
 };
