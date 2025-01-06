@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, HashRouter, Route, Routes } from 'react-router-dom';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import Footer from './components/Footer';
 import NavBar from './components/NavBar';
@@ -40,7 +40,7 @@ function App() {
   return (
     <AppContext.Provider value={{ userCredentials, setUserCredentials }}>
       <>
-        <BrowserRouter basename={import.meta.env.PUBLIC_URL}>
+        <HashRouter>
           <NavBar />
           <Routes>
             <Route path="/" element={<Home />} />
@@ -102,7 +102,7 @@ function App() {
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Footer />
-        </BrowserRouter>
+        </HashRouter>
       </>
     </AppContext.Provider>
   );
