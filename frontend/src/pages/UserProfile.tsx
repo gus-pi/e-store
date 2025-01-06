@@ -50,6 +50,7 @@ const UserProfile = () => {
           <div className="col-lg-5 col-md-8 mx-auto rounded border p-4 text-center">
             <h2 className="mb-3 text-center">Change Password</h2>
             <hr />
+            <ChangePassword />
             <hr />
             <button
               type="button"
@@ -180,6 +181,86 @@ const UpdateProfile = () => {
 
       <div className="text-end">
         <button type="submit" className="btn btn-primary">
+          Submit
+        </button>
+      </div>
+    </form>
+  );
+};
+
+const ChangePassword = () => {
+  const navigate = useNavigate();
+  const appContext = useContext(AppContext);
+
+  if (!appContext) {
+    throw new Error('AppContext.Provider is missing!');
+  }
+
+  const { userCredentials, setUserCredentials } = appContext;
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const password = e.currentTarget.password.value;
+    const confirm_password = e.currentTarget.confirm_password.value;
+
+    if (!password) {
+      alert('Please enter a new password');
+      return;
+    }
+
+    if (password !== confirm_password) {
+      alert('Passwords do not match');
+      return;
+    }
+
+    const new_password = { password };
+
+    try {
+      const response = await fetch(
+        `http://localhost:4000/users/${userCredentials?.user.id}`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + userCredentials?.accessToken,
+          },
+          body: JSON.stringify(new_password),
+        }
+      );
+      const data = await response.json();
+
+      if (response.ok) {
+        alert('Password changed succesfully!');
+        console.log('server response: ', data);
+      } else if (response.status === 401) {
+        setUserCredentials(null);
+        navigate('/auth/login');
+      } else {
+        alert('Unable to change password: ' + data);
+      }
+    } catch (error) {
+      alert('Unable to connect to the server');
+    }
+  };
+  return (
+    <form onSubmit={handleSubmit}>
+      <div className="mb-3">
+        <label className="form-label">New Password</label>
+        <input type="password" className="form-control" name="password" />
+      </div>
+
+      <div className="mb-3">
+        <label className="form-label">Confirm Password</label>
+        <input
+          type="password"
+          className="form-control"
+          name="confirm_password"
+        />
+      </div>
+
+      <div className="text-end">
+        <button type="submit" className="btn btn-warning">
           Submit
         </button>
       </div>

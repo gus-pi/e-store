@@ -44,7 +44,7 @@ const Login = () => {
         setUserCredentials(data);
         navigate('/');
       } else {
-        alert('Unable to log in' + data);
+        alert('Unable to log in: ' + data);
       }
     } catch (error) {
       alert('Unable to connect to server');
