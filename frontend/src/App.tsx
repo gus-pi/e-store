@@ -17,7 +17,6 @@ import { UserCredentials } from './types';
 import { AdminRoute, AuthenticatedUserRoute } from './components/Authorization';
 import UserProfile from './pages/UserProfile';
 import UserList from './pages/admin/users/UserList';
-import UserDetails from './components/UserDetails';
 import UserDetailsAdmin from './pages/admin/users/UserDetailsAdmin';
 
 function App() {
