@@ -16,6 +16,7 @@ import { AppContext } from './AppContext';
 import { UserCredentials } from './types';
 import { AdminRoute, AuthenticatedUserRoute } from './components/Authorization';
 import UserProfile from './pages/UserProfile';
+import UserList from './pages/admin/users/UserList';
 
 function App() {
   const getStoredCredentials = () => {
@@ -74,6 +75,15 @@ function App() {
               element={
                 <AdminRoute>
                   <EditProduct />
+                </AdminRoute>
+              }
+            />
+
+            <Route
+              path="/admin/users"
+              element={
+                <AdminRoute>
+                  <UserList />
                 </AdminRoute>
               }
             />
