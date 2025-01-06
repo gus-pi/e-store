@@ -16,18 +16,28 @@ const UserList = () => {
 
   const [users, setUsers] = useState<User[]>([]);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const pageSize = 10;
+
   const getUsers = async () => {
     try {
-      const response = await fetch('http://localhost:4000/users', {
-        method: 'GET',
-        headers: {
-          Authorization: 'Bearer ' + userCredentials?.accessToken,
-        },
-      });
+      const response = await fetch(
+        `http://localhost:4000/users?_page=${currentPage}&_limit=${pageSize}`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: 'Bearer ' + userCredentials?.accessToken,
+          },
+        }
+      );
 
       const data = await response.json();
 
       if (response.ok) {
+        let totalCount = Number(response.headers.get('X-Total-Count'));
+        let pages = Math.ceil(totalCount / pageSize);
+        setTotalPages(pages);
         setUsers(data);
       } else if (response.status === 401) {
         setUserCredentials(null);
@@ -42,7 +52,30 @@ const UserList = () => {
 
   useEffect(() => {
     getUsers();
-  }, []);
+  }, [currentPage]);
+
+  //pagination buttons
+  let paginationButtons = [];
+
+  for (let i = 1; i <= totalPages; i++) {
+    paginationButtons.push(
+      <li
+        className={i === currentPage ? 'page-item active' : '"page-item'}
+        key={i}
+      >
+        <a
+          className="page-link"
+          href={`?page=${i}`}
+          onClick={(e) => {
+            e.preventDefault();
+            setCurrentPage(Number(i));
+          }}
+        >
+          {i}
+        </a>
+      </li>
+    );
+  }
 
   return (
     <div className="container my-4">
@@ -86,6 +119,7 @@ const UserList = () => {
           ))}
         </tbody>
       </table>
+      <ul className="pagination">{paginationButtons}</ul>
     </div>
   );
 };
