@@ -17,6 +17,8 @@ import { UserCredentials } from './types';
 import { AdminRoute, AuthenticatedUserRoute } from './components/Authorization';
 import UserProfile from './pages/UserProfile';
 import UserList from './pages/admin/users/UserList';
+import UserDetails from './components/UserDetails';
+import UserDetailsAdmin from './pages/admin/users/UserDetailsAdmin';
 
 function App() {
   const getStoredCredentials = () => {
@@ -84,6 +86,14 @@ function App() {
               element={
                 <AdminRoute>
                   <UserList />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/users/details/:id"
+              element={
+                <AdminRoute>
+                  <UserDetailsAdmin />
                 </AdminRoute>
               }
             />
