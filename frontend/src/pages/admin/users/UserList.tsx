@@ -23,7 +23,9 @@ const UserList = () => {
   const getUsers = async () => {
     try {
       const response = await fetch(
-        `http://localhost:4000/users?_page=${currentPage}&_limit=${pageSize}`,
+        `${
+          import.meta.env.VITE_APP_WEBAPI_URL
+        }/users?_page=${currentPage}&_limit=${pageSize}`,
         {
           method: 'GET',
           headers: {

@@ -22,7 +22,7 @@ const EditProduct = () => {
   const getProducts = async () => {
     try {
       const response = await fetch(
-        `http://localhost:4000/products/${params.id}`
+        `${import.meta.env.VITE_APP_WEBAPI_URL}/products/${params.id}`
       );
       const data = await response.json();
       setInitialData(data);
@@ -53,7 +53,7 @@ const EditProduct = () => {
     }
     try {
       const response = await fetch(
-        `http://localhost:4000/products/${params.id}`,
+        `${import.meta.env.VITE_APP_WEBAPI_URL}/products/${params.id}`,
         {
           method: 'PATCH',
           headers: {
@@ -175,7 +175,9 @@ const EditProduct = () => {
               <div className="row mb-3">
                 <div className="col-sm-8 offset-sm-4">
                   <img
-                    src={`http://localhost:4000/images/${initialData.imageFilename}`}
+                    src={`${import.meta.env.VITE_APP_WEBAPI_URL}/images/${
+                      initialData.imageFilename
+                    }`}
                     alt="image"
                     width={150}
                   />

@@ -18,12 +18,15 @@ const UserDetailsAdmin = () => {
 
   const getUserDetails = async () => {
     try {
-      const response = await fetch(`http://localhost:4000/users/${params.id}`, {
-        method: 'GET',
-        headers: {
-          Authorization: 'Bearer ' + userCredentials?.accessToken,
-        },
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_APP_WEBAPI_URL}/users/${params.id}`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: 'Bearer ' + userCredentials?.accessToken,
+          },
+        }
+      );
       const data = await response.json();
 
       if (response.ok) {

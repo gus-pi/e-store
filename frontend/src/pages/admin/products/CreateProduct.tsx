@@ -35,13 +35,16 @@ const CreateProduct = () => {
       return;
     }
     try {
-      const response = await fetch('http://localhost:4000/products', {
-        method: 'POST',
-        headers: {
-          Authorization: 'Bearer ' + userCredentials?.accessToken,
-        },
-        body: formData,
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_APP_WEBAPI_URL}/products`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: 'Bearer ' + userCredentials?.accessToken,
+          },
+          body: formData,
+        }
+      );
 
       const data = await response.json();
 

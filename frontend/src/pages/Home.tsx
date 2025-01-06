@@ -16,7 +16,9 @@ const Home = () => {
   const pageSize = 8;
 
   async function getProducts() {
-    let url = `http://localhost:4000/products?&_page=${currentPage}&_limit=${pageSize}`;
+    let url = `${
+      import.meta.env.VITE_APP_WEBAPI_URL
+    }/products?&_page=${currentPage}&_limit=${pageSize}`;
 
     if (filterParams.brand) {
       url = url + `&brand=${filterParams.brand}`;

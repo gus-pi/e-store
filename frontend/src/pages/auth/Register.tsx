@@ -33,13 +33,16 @@ const Register = () => {
     delete user.confirm_password;
 
     try {
-      const response = await fetch('http://localhost:4000/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(user),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_APP_WEBAPI_URL}/register`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(user),
+        }
+      );
       const data = await response.json();
       if (response.ok) {
         console.log('server response: ', data);

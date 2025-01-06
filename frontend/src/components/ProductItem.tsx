@@ -5,7 +5,9 @@ const ProductItem = ({ product }: { product: ProductData }) => {
   return (
     <div className="rounded border shadow p-4 text-center h-100">
       <img
-        src={`http://localhost:4000/images/${product.imageFilename}`}
+        src={`${import.meta.env.VITE_APP_WEBAPI_URL}/images/${
+          product.imageFilename
+        }`}
         alt="product"
         className="img-fluid"
         style={{ height: '200px', objectFit: 'contain' }}

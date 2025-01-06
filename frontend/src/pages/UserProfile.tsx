@@ -89,7 +89,9 @@ const UpdateProfile = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:4000/users/${userCredentials?.user.id}`,
+        `${import.meta.env.VITE_APP_WEBAPI_URL}/users/${
+          userCredentials?.user.id
+        }`,
         {
           method: 'PATCH',
           headers: {
@@ -218,7 +220,9 @@ const ChangePassword = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:4000/users/${userCredentials?.user.id}`,
+        `${import.meta.env.VITE_APP_WEBAPI_URL}/users/${
+          userCredentials?.user.id
+        }`,
         {
           method: 'PATCH',
           headers: {

@@ -36,7 +36,11 @@ const ProductList = () => {
   const { userCredentials, setUserCredentials } = appContext;
 
   async function getProducts() {
-    let url = `http://localhost:4000/products?&_page=${currentPage}&_limit=${pageSize}&q=${search}&_sort=${sortColumn.column}&_order=${sortColumn.orderBy}`;
+    let url = `${
+      import.meta.env.VITE_APP_WEBAPI_URL
+    }/products?&_page=${currentPage}&_limit=${pageSize}&q=${search}&_sort=${
+      sortColumn.column
+    }&_order=${sortColumn.orderBy}`;
 
     try {
       const response = await fetch(url);
@@ -58,12 +62,15 @@ const ProductList = () => {
 
   const deleteProduct = async (id: number) => {
     try {
-      const response = await fetch(`http://localhost:4000/products/${id}`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: 'Bearer ' + userCredentials?.accessToken,
-        },
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_APP_WEBAPI_URL}/products/${id}`,
+        {
+          method: 'DELETE',
+          headers: {
+            Authorization: 'Bearer ' + userCredentials?.accessToken,
+          },
+        }
+      );
       if (response.status === 401) {
         // unauthorized response
         setUserCredentials(null);
@@ -246,7 +253,9 @@ const ProductList = () => {
               <td>${product.price}</td>
               <td>
                 <img
-                  src={`http://localhost:4000/images/${product.imageFilename}`}
+                  src={`${import.meta.env.VITE_APP_WEBAPI_URL}/images/${
+                    product.imageFilename
+                  }`}
                   alt="product"
                   width="100"
                 />
