@@ -12,7 +12,7 @@ const NavBar = () => {
 
   const { userCredentials, setUserCredentials } = appContext;
   return (
-    <nav className="navbar navbar-expand-lg bg-white border-bottom box-shadow">
+    <nav className="navbar navbar-expand bg-white border-bottom box-shadow">
       <div className="container">
         <Link className="navbar-brand" to="/">
           <img src="/icon.svg" alt="..." width="30" className="me-2" /> Best
