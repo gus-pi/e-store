@@ -31,13 +31,16 @@ const Login = () => {
     const credentials = { email, password };
 
     try {
-      const response = await fetch(`http://localhost:4000/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(credentials),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_APP_WEBAPI_URL}/login`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(credentials),
+        }
+      );
       const data = await response.json();
       if (response.ok) {
         console.log('server response: ', data);
