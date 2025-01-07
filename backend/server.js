@@ -1,7 +1,6 @@
-import jsonServer from 'json-server';
-import multer from 'multer';
-import auth from 'json-server-auth';
-
+const jsonServer = require('json-server');
+const auth = require('json-server-auth');
+const multer = require('multer');
 const server = jsonServer.create();
 const router = jsonServer.router('db.json');
 const middlewares = jsonServer.defaults();
@@ -18,7 +17,7 @@ const storage = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     let date = new Date();
-    let imageFilename = `${date.getTime()}_${file.originalname}`;
+    let imageFilename = date.getTime() + '_' + file.originalname;
     req.body.imageFilename = imageFilename;
     cb(null, imageFilename);
   },
@@ -80,11 +79,10 @@ const rules = auth.rewriter({
 
 // You must apply the middlewares in the following order
 server.use(rules);
-
 server.use(auth);
 
 // Use default router
 server.use(router);
 server.listen(4000, () => {
-  console.log('JSON Server is running on PORT 4000');
+  console.log('JSON Server is running');
 });

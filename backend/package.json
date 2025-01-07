@@ -2,10 +2,9 @@
   "dependencies": {
     "json-server": "^0.17.4",
     "json-server-auth": "^2.1.0",
-    "multer": "^1.4.5-lts.1"
+    "multer": "^1.4.4"
   },
   "scripts": {
-    "start": "npx json-server --watch db.json --port 4000"
-  },
-  "type": "module"
+    "start": "node server.js"
+  }
 }
